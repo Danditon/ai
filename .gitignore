@@ -1,0 +1,27 @@
+# 환경 변수·API 키
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# 테스트 사진·모델 가중치
+data/
+models/
+*.pt
+*.pth
+*.safetensors
+*.onnx
+
+# 로그
+*.log
+
+# 에디터·OS
+.idea/
+.vscode/
+.DS_Store
