@@ -32,13 +32,86 @@
 
 임계값은 같은 장소/다른 장소 사진 10쌍으로 테스트해 정합니다. 위치 조건은 백엔드에서 먼저 확인합니다.
 
+## 임베딩 서버
+
+백엔드에서만 호출하는 내부 API입니다. 유사도 계산은 백엔드에서 합니다.
+
+### `POST /embed`
+
+`multipart/form-data`의 `image` 파트로 사진 1장(최대 10MB)을 보냅니다.
+
+```json
+{
+  "model": "ViT-B-32",
+  "dim": 512,
+  "embedding": [0.0123, -0.0456]
+}
+```
+
+`embedding`은 L2 정규화된 값이라 두 벡터의 내적이 곧 코사인 유사도입니다. 실제 길이는 `dim`과 같습니다. 모델이 바뀌면 `dim`도 바뀔 수 있으므로 512로 고정하지 마세요.
+
+| 상태 | `code` | 의미 |
+|---|---|---|
+| 400 | `INVALID_IMAGE` | 이미지 해석 실패 |
+| 400 | `IMAGE_TOO_LARGE` | 10MB 초과 |
+| 500 | `INFERENCE_FAILED` | 추론 오류 |
+| 503 | `MODEL_LOADING` | 모델 로딩 중이거나 로딩 실패 |
+
+에러 응답은 `{ "code": ..., "message": ... }` 형식입니다.
+
+### `GET /health`
+
+모델 로딩이 끝나면 200, 그전에는 503을 반환합니다.
+
+```json
+{ "status": "ok", "model": "ViT-B-32" }
+```
+
+### 환경 변수
+
+| 이름 | 기본값 | 설명 |
+|---|---|---|
+| `EMBED_MODEL` | `ViT-B-32` | open_clip 모델 이름 |
+| `EMBED_PRETRAINED` | `openai` | 가중치 태그 |
+| `EMBED_NUM_THREADS` | `2` | 추론에 쓰는 CPU 스레드 수 |
+
+Docker 이미지는 빌드할 때 받은 가중치만 사용합니다. 모델을 바꾸면 이미지를 다시 빌드하고, 저장된 임베딩도 다시 만들어야 합니다.
+
 ## 기술 스택
 
-미정 (LLM·임베딩 모델, 백엔드 연동 방식 결정 후 작성)
+- Python 3.12, FastAPI
+- open_clip, PyTorch (CPU)
+- CLIP ViT-B-32 (`openai` 가중치)
+
+LLM 모델과 백엔드 연동 방식은 결정 후 작성합니다.
 
 ## 실행 방법
 
-스택 결정 후 작성
+### Docker
+
+```bash
+docker build -t danditon-ai .
+docker run --rm -p 8000:8000 danditon-ai
+```
+
+실행 메모리는 1.2GB 이상 잡아 주세요.
+
+### 로컬
+
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements-dev.txt
+uvicorn app.main:app --port 8000
+```
+
+처음 실행하면 가중치를 내려받느라 시간이 걸립니다.
+
+### 테스트
+
+```bash
+pytest
+```
 
 ## 협업
 
