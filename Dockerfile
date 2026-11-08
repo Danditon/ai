@@ -13,7 +13,8 @@ COPY requirements.txt .
 RUN pip install --extra-index-url https://download.pytorch.org/whl/cpu -r requirements.txt
 
 # 모델 가중치를 이미지에 포함한다. 실행 중에는 외부에서 내려받지 않는다.
-RUN python -c "import os, open_clip; open_clip.create_model_and_transforms(os.environ['EMBED_MODEL'], pretrained=os.environ['EMBED_PRETRAINED'])"
+# 모델을 만들지 않고 파일만 받아서 RAM 2GB 서버에서도 빌드 메모리가 적게 든다.
+RUN python -c "import os, open_clip; open_clip.download_pretrained(open_clip.get_pretrained_cfg(os.environ['EMBED_MODEL'], os.environ['EMBED_PRETRAINED']))"
 ENV HF_HUB_OFFLINE=1
 
 COPY app ./app
