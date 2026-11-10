@@ -26,6 +26,8 @@
 | 2 | 확인·구매 등 행동 1개 추가 |
 | 3 | 시간대·구도 등 조건이 까다로움 |
 
+LLM은 백엔드가 직접 호출합니다. 이 레포의 `llm/`에는 백엔드에 넘길 프롬프트(`quest_prompt.md`)와 출력 스키마(`quest_schema.json`), 그리고 이를 시험하는 스크립트를 둡니다.
+
 ### 2. 이미지 퀘스트 검증
 
 수행 사진과 기준 사진의 임베딩 코사인 유사도로 같은 장소·같은 구도인지 판별합니다. 백엔드의 `POST /quests/{id}/submissions`에서 사용합니다.
@@ -83,7 +85,7 @@ Docker 이미지는 빌드할 때 받은 가중치만 사용합니다. 모델을
 - open_clip, PyTorch (CPU)
 - CLIP ViT-B-32 (`openai` 가중치)
 
-LLM 모델과 백엔드 연동 방식은 결정 후 작성합니다.
+LLM 모델은 테스트 후 확정합니다. 후보는 Gemini 3.5 Flash-Lite입니다.
 
 ## 실행 방법
 
@@ -112,6 +114,18 @@ uvicorn app.main:app --port 8000
 ```bash
 pytest
 ```
+
+### 퀘스트 정형화 프롬프트 시험
+
+`llm/samples.json`의 예시 5개로 Gemini를 호출해 JSON 형식, 난이도, 응답 시간을 확인합니다. 결과는 `llm/results/`에 저장되며 커밋하지 않습니다.
+
+```bash
+pip install -r llm/requirements.txt
+cp .env.example .env    # GEMINI_API_KEY에 개발용 키 입력
+python llm/check_quest.py
+```
+
+`--model`로 다른 모델을, `--repeat 3`으로 같은 예시를 여러 번 돌려 결과가 흔들리는지 볼 수 있습니다.
 
 ## 협업
 

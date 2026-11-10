@@ -18,8 +18,9 @@ models/
 *.safetensors
 *.onnx
 
-# 로그
+# 로그·실행 결과
 *.log
+llm/results/
 
 # 에디터·OS
 .idea/

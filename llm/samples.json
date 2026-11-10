@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "questType": "GENERAL",
+    "placeName": "삼덕동 떡볶이집",
+    "address": "대구 중구 삼덕동",
+    "longingText": "고등학생 때 친구들이랑 학원 끝나고 매일 가던 곳이에요. 아직 장사하는지 궁금해요",
+    "expectedDifficulty": 2
+  },
+  {
+    "id": 2,
+    "questType": "GENERAL",
+    "placeName": "앞산 전망대",
+    "address": "대구 남구 앞산순환로",
+    "longingText": "할아버지랑 주말마다 올라가서 대구 시내를 내려다보던 곳",
+    "expectedDifficulty": 1
+  },
+  {
+    "id": 3,
+    "questType": "GENERAL",
+    "placeName": "서문시장 야시장",
+    "address": "대구 중구 대신동",
+    "longingText": "엄마랑 금요일 밤마다 가서 납작만두 사 먹던 곳. 엄마가 요즘도 그 가게가 있냐고 자꾸 물어보세요",
+    "expectedDifficulty": 3
+  },
+  {
+    "id": 4,
+    "questType": "IMAGE",
+    "placeName": "김광석 다시그리기길",
+    "address": "대구 중구 대봉동",
+    "longingText": "대학 동기들이랑 벽화 앞에서 단체 사진 찍었던 곳이에요",
+    "expectedDifficulty": 1
+  },
+  {
+    "id": 5,
+    "questType": "IMAGE",
+    "placeName": "영일대 해수욕장",
+    "address": "경북 포항시 북구 두호동",
+    "longingText": "아버지랑 새해 첫날 해 뜨는 걸 보던 곳. 해 뜰 때 그 자리에서 찍어 주세요",
+    "expectedDifficulty": 3
+  }
+]

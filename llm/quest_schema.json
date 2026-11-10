@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "properties": {
+    "quest_title": {
+      "type": "string",
+      "description": "장소명이 들어간 퀘스트 제목, 30자 이내"
+    },
+    "quest_description": {
+      "type": "string",
+      "description": "수행자에게 하는 부탁, 1~2문장, 100자 이내"
+    },
+    "difficulty": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3,
+      "description": "1: 방문·촬영만, 2: 확인·구매 등 행동 1개 추가, 3: 시간대·구도 등 조건이 까다로움"
+    },
+    "difficulty_reason": {
+      "type": "string",
+      "description": "난이도를 정한 이유, 한 문장"
+    },
+    "keywords": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "maxItems": 5,
+      "description": "그리운 이유에서 뽑은 관계·감정·장소 키워드"
+    }
+  },
+  "required": ["quest_title", "quest_description", "difficulty", "difficulty_reason", "keywords"],
+  "additionalProperties": false
+}
