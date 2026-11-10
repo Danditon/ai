@@ -96,6 +96,21 @@ docker run --rm -p 8000:8000 danditon-ai
 
 실행 메모리는 1.2GB 이상 잡아 주세요.
 
+### 운영 서버 배포 (EC2)
+
+AI 서버는 BE와 같은 VPC의 별도 인스턴스에 띄웁니다. BE는 사설 IP로 호출합니다.
+
+- 인스턴스: Ubuntu, RAM 2GB 이상(`t4g.small`·`t3.small`), 디스크 20GB
+- 보안그룹 인바운드: 8000은 BE 서버 보안그룹만, 22는 배포하는 사람 IP만 (외부 공개 금지)
+
+```bash
+deploy/deploy.sh <서버 공인 IP> <SSH 키 파일>
+```
+
+처음 실행하면 스왑 2GB와 Docker를 설치하고, 소스만 올려 서버에서 이미지를 빌드한 뒤 컨테이너를 띄웁니다(처음에는 10분 안팎). 서버 안에서 `/health`와 `/embed`를 호출해 확인하고, BE에 넣을 `EMBED_HOST` 값을 출력합니다. 코드를 바꾼 뒤 다시 실행하면 새 이미지로 교체하고, 서버가 재부팅돼도 컨테이너가 다시 뜹니다.
+
+문제가 생기면 서버에서 `sudo docker logs --tail 100 danditon-ai`로 로그를 봅니다.
+
 ### 로컬
 
 ```bash
